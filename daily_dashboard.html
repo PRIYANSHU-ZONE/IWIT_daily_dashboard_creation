@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily STN Operations</title>
+<style>
+:root { color-scheme: light; --ink: #202b27; --muted: #68736e; --paper: #f4f6f1; --panel: #fff; --line: #dfe5de; --green: #247557; --lime: #c7dd6c; --rust: #c86a4b; --blue: #5f8da4; --gold: #d3a844; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 14px/1.45 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 1220px; margin: 0 auto; padding: 34px 28px 46px; }
+header { display: flex; justify-content: space-between; align-items: end; gap: 24px; padding: 0 0 24px; border-bottom: 1px solid var(--line); }
+.eyebrow { color: var(--green); font-size: 11px; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
+h1 { margin: 5px 0 0; font: 500 32px/1.05 Georgia, "Times New Roman", serif; }
+.stamp { color: var(--muted); font-size: 12px; text-align: right; }
+.stamp strong { display: block; color: var(--ink); font-size: 13px; font-weight: 650; }
+.cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; padding: 18px 0 24px; }
+.metric { min-height: 100px; background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--green); padding: 15px 16px; }
+.metric:nth-child(2) { border-top-color: var(--blue); } .metric:nth-child(3) { border-top-color: var(--gold); } .metric:nth-child(4) { border-top-color: var(--rust); } .metric:nth-child(5) { border-top-color: #91ad3e; }
+.metric-label { color: var(--muted); font-size: 12px; } .metric-value { display: block; margin-top: 7px; font: 500 27px/1 Georgia, "Times New Roman", serif; font-variant-numeric: tabular-nums; }
+.grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.panel { background: var(--panel); border: 1px solid var(--line); padding: 17px 18px 18px; min-width: 0; }
+.panel h2 { margin: 0; font: 500 19px/1.2 Georgia, "Times New Roman", serif; }
+.sub { margin: 4px 0 14px; color: var(--muted); font-size: 11px; }
+.bar-list { display: grid; gap: 9px; }
+.bar-row { display: grid; grid-template-columns: minmax(100px, 155px) minmax(60px, 1fr) 48px; align-items: center; gap: 9px; min-height: 16px; }
+.bar-label { overflow: hidden; color: #43504a; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.track { height: 9px; overflow: hidden; background: #edf0eb; } .fill { height: 100%; background: var(--green); }
+.bar-value { color: var(--ink); font-size: 11px; font-variant-numeric: tabular-nums; text-align: right; }
+.lower { margin-top: 12px; }
+.status-layout { display: grid; grid-template-columns: minmax(130px, .8fr) minmax(130px, 1fr); align-items: center; gap: 12px; min-height: 190px; }
+.donut { display: block; width: min(100%, 190px); margin: auto; } .donut-center { font: 500 18px Georgia, "Times New Roman", serif; fill: var(--ink); } .donut-caption { font: 10px ui-sans-serif, system-ui, sans-serif; fill: var(--muted); }
+.legend { display: grid; gap: 9px; } .legend-item { display: grid; grid-template-columns: 9px minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: 11px; } .swatch { width: 9px; height: 9px; } .legend-label { color: #43504a; } .legend-value { font-variant-numeric: tabular-nums; }
+.table-wrap { overflow-x: auto; } table { width: 100%; border-collapse: collapse; font-size: 11px; } th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; } th { color: var(--muted); font-weight: 650; } td:last-child, th:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.notice { margin-top: 12px; padding: 12px 14px; border-left: 3px solid var(--gold); background: #fff9e9; color: #594a25; font-size: 12px; }
+footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; border-top: 1px solid var(--line); margin-top: 16px; padding-top: 12px; color: var(--muted); font-size: 10px; }
+@media (max-width: 760px) { main { padding: 22px 14px 30px; } header { align-items: start; flex-direction: column; gap: 8px; } .stamp { text-align: left; } .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } .metric:last-child { grid-column: span 2; } .grid { grid-template-columns: 1fr; } }
+@media (max-width: 420px) { h1 { font-size: 27px; } .bar-row { grid-template-columns: minmax(84px, 115px) minmax(35px, 1fr) 42px; gap: 6px; } .status-layout { grid-template-columns: 1fr 1fr; gap: 6px; } }
+@media print { body { background: #fff; } main { max-width: none; padding: 0; } .panel, .metric { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<main>
+<header><div><div class="eyebrow">Supply chain | Daily operations</div><h1>STN movement pulse</h1></div><div class="stamp"><strong id="generated"></strong><span>Source extracts: STN ID - 26 SEP.csv | STR ID - 26 SEP.csv</span></div></header>
+<section class="cards" id="cards" aria-label="Daily key performance indicators"></section>
+<section class="grid">
+  <article class="panel"><h2>Top 10 Verticals by STNs</h2><p class="sub">Distinct STN IDs per vertical</p><div class="bar-list" id="verticals"></div></article>
+  <article class="panel"><h2>Top Source Warehouses</h2><p class="sub">Distinct STN IDs by source warehouse</p><div class="bar-list" id="sources"></div></article>
+  <article class="panel"><h2>STNs by Movement Type</h2><p class="sub">Distinct STN IDs by movement type</p><div class="bar-list" id="movements"></div></article>
+  <article class="panel"><h2>STN Status Distribution</h2><p class="sub">Distinct STN IDs by current status</p><div class="status-layout"><svg class="donut" viewBox="0 0 200 200" role="img" aria-label="STN status distribution"><g id="donut-slices" transform="rotate(-90 100 100)"></g><text id="donut-total" class="donut-center" x="100" y="97" text-anchor="middle"></text><text class="donut-caption" x="100" y="116" text-anchor="middle">STN IDs</text></svg><div class="legend" id="status-legend"></div></div></article>
+    <article class="panel"><h2>STR IDs by User</h2><p class="sub" id="user-caption"></p><div class="bar-list" id="users"></div></article>
+  <article class="panel"><h2>STN Status by User</h2><p class="sub">Distinct STN IDs grouped by creator and status</p><div class="table-wrap" id="user-matrix"></div></article>
+</section>
+<div class="notice" id="data-note"></div>
+<footer><span>Quantities are summed from STN item rows; IDs are distinct-counted.</span><span>Standalone report · no external assets or network calls</span></footer>
+</main>
+<script>
+const dashboardData = {"cards":[{"label":"Total STN IDs","value":"16,748"},{"label":"Total STN Items","value":"986.2K"},{"label":"Requested Qty","value":"3.2M"},{"label":"Scheduled Qty","value":"3.0M"},{"label":"Scheduled Fulfilment","value":"92.84%"}],"verticals":[{"label":"Chips","value":4738},{"label":"SavouriesNamkeens","value":4541},{"label":"SpicesMasala","value":4468},{"label":"CookiesBiscuits","value":3572},{"label":"OtherPulses","value":3536},{"label":"WashingPowder","value":3372},{"label":"Rice","value":3360},{"label":"Soap","value":3277},{"label":"OtherCookingOil","value":3261},{"label":"Diaper","value":3154}],"sources":[{"label":"ane_gsh_wh_nl_01nl","value":1380},{"label":"bin_sh_wh_nl_01nl","value":1292},{"label":"bhi_pad_wh_nl_05nl","value":1108},{"label":"hyd_gsh_wh_nl_01nl","value":942},{"label":"kol_gsh_wh_nl_01nl","value":926},{"label":"ulu_sh_wh_nl_01nl","value":817},{"label":"che_gsh_wh_nl_01nl","value":806},{"label":"del_cs_wh_nl_01nl","value":558},{"label":"son_gsh_wh_nl_01nl","value":542},{"label":"ben_hos_wh_nl_02nl","value":466}],"movements":[{"label":"HL","value":13767},{"label":"HL_Fresh","value":2301},{"label":"NON-LARGE","value":680}],"statuses":[{"label":"Cancelled","value":530},{"label":"Closed","value":6},{"label":"Created","value":42},{"label":"Lost","value":10},{"label":"Scheduled","value":16160}],"strUsers":[{"label":"system","value":693293},{"label":"shaikanirudh.vc","value":16640},{"label":"manjunathp2.vc","value":11674},{"label":"priyanshujha.vc","value":8181},{"label":"rajasrig.vc","value":3533},{"label":"hithashreehp.vc","value":3252},{"label":"sayanide.vc","value":3013},{"label":"manchoju.r","value":2248},{"label":"aishwaryam2.vc","value":403},{"label":"rahulkumar52.vc","value":352}],"stnUserMatrix":[],"hasStrFile":true,"strStnOverlap":0,"itemRows":986242};
+const palette = ["#247557", "#c86a4b", "#5f8da4", "#d3a844", "#91ad3e", "#8b7660"];
+document.getElementById("generated").textContent = "Generated " + new Date().toLocaleString();
+const cards = document.getElementById("cards");
+dashboardData.cards.forEach(item => {
+  const node = document.createElement("div"); node.className = "metric";
+  const label = document.createElement("span"); label.className = "metric-label"; label.textContent = item.label;
+  const value = document.createElement("strong"); value.className = "metric-value"; value.textContent = item.value;
+  node.append(label, value); cards.append(node);
+});
+function renderBars(targetId, rows) {
+  const target = document.getElementById(targetId); const max = Math.max(1, ...rows.map(row => row.value));
+  if (!rows.length) { target.textContent = "No data available"; return; }
+  rows.forEach(row => {
+    const line = document.createElement("div"); line.className = "bar-row";
+    const label = document.createElement("span"); label.className = "bar-label"; label.textContent = row.label; label.title = row.label;
+    const track = document.createElement("div"); track.className = "track";
+    const fill = document.createElement("div"); fill.className = "fill"; fill.style.width = (row.value / max * 100) + "%"; track.append(fill);
+    const value = document.createElement("span"); value.className = "bar-value"; value.textContent = row.value.toLocaleString();
+    line.append(label, track, value); target.append(line);
+  });
+}
+renderBars("verticals", dashboardData.verticals);
+renderBars("sources", dashboardData.sources);
+renderBars("movements", dashboardData.movements);
+renderBars("users", dashboardData.strUsers);
+document.getElementById("user-caption").textContent = dashboardData.hasStrFile ? "Distinct STR IDs per user (STR extract)" : "STR extract not found";
+const total = dashboardData.statuses.reduce((sum, row) => sum + row.value, 0);
+document.getElementById("donut-total").textContent = total.toLocaleString();
+const slices = document.getElementById("donut-slices"); const legend = document.getElementById("status-legend");
+let offset = 0; const circumference = 2 * Math.PI * 70;
+dashboardData.statuses.forEach((row, index) => {
+  const length = total ? row.value / total * circumference : 0;
+  const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circle.setAttribute("cx", "100"); circle.setAttribute("cy", "100"); circle.setAttribute("r", "70");
+  circle.setAttribute("fill", "none"); circle.setAttribute("stroke", palette[index % palette.length]); circle.setAttribute("stroke-width", "25");
+  circle.setAttribute("stroke-dasharray", `${length} ${circumference - length}`); circle.setAttribute("stroke-dashoffset", `${-offset}`); slices.append(circle); offset += length;
+  const item = document.createElement("div"); item.className = "legend-item";
+  const swatch = document.createElement("span"); swatch.className = "swatch"; swatch.style.background = palette[index % palette.length];
+  const label = document.createElement("span"); label.className = "legend-label"; label.textContent = row.label;
+  const value = document.createElement("strong"); value.className = "legend-value"; value.textContent = row.value.toLocaleString();
+  item.append(swatch, label, value); legend.append(item);
+});
+const matrix = document.getElementById("user-matrix");
+if (!dashboardData.stnUserMatrix.length) {
+  matrix.textContent = "Not available: the supplied extracts do not share matching STN ID / STR ID values.";
+} else {
+  const table = document.createElement("table"); const head = document.createElement("thead"); const headRow = document.createElement("tr");
+    ["User", "Cancelled", "Closed", "Lost", "Scheduled", "Total"].forEach(text => { const cell = document.createElement("th"); cell.textContent = text; headRow.append(cell); });
+  head.append(headRow); table.append(head); const body = document.createElement("tbody");
+    dashboardData.stnUserMatrix.forEach(row => { const tr = document.createElement("tr"); [row.user, row.cancelled, row.closed, row.lost, row.scheduled, row.total].forEach((text, index) => { const cell = document.createElement("td"); cell.textContent = index ? text.toLocaleString() : text; tr.append(cell); }); body.append(tr); });
+  table.append(body); matrix.append(table);
+}
+const note = document.getElementById("data-note");
+note.textContent = dashboardData.hasStrFile
+  ? `Creator breakdown uses STR IDs. ${dashboardData.strStnOverlap.toLocaleString()} STR IDs matched an STN ID in these extracts; status-by-user is ${dashboardData.stnUserMatrix.length ? "shown for matches" : "unavailable without a shared identifier"}.`
+  : "Only an STN extract was found. Creator charts require a matching STR extract; status-by-user also requires a shared identifier.";
+</script>
+</body>
+</html>
